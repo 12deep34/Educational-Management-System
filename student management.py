@@ -67,7 +67,52 @@ class MessagingSystem:
     def send_message(self, sender, receiver, content):
         self.messages.append(Message(sender, receiver, content))
 
-# Define Staff, Student, Admin, Course, Subject, Session, Attendance, ExamResult, Notification, Feedback classes and functionalities for each feature
+# Define StudentPanel and StaffPanel classes
+class StudentPanel:
+    def __init__(self):
+        pass
+
+    def show_welcome_message(self):
+        print("Welcome to the Student Panel!")
+
+    def remote_learning(self):
+        print("Remote Learning is in progress...")
+
+    def access_resources(self, resource_db):
+        print("Accessing Resources:")
+        for resource in resource_db.resources:
+            print(f"Resource: {resource.name}, Link: {resource.link}")
+
+    def view_attendance(self):
+        print("Viewing Attendance...")
+
+    def view_calendar(self):
+        print("Viewing Calendar...")
+
+class StaffPanel:
+    def __init__(self):
+        pass
+
+    def show_welcome_message(self):
+        print("Welcome to the Staff Panel!")
+
+    def mark_attendance(self):
+        print("Marking Attendance...")
+
+    def view_holidays(self):
+        print("Viewing Holidays...")
+
+    def manage_subjects(self):
+        print("Managing Subjects...")
+
+    def manage_classes(self):
+        print("Managing Classes...")
+
+    def apply_leave(self):
+        print("Applying for Leave...")
+
+    def view_assigned_classes(self):
+        print("Viewing Assigned Classes...")
 
 # Define UserDatabase class
 class UserDatabase:
@@ -77,7 +122,7 @@ class UserDatabase:
     def register_user(self):
         username = input("Enter username: ")
         password = input("Enter password: ")
-        role = input("Enter role (staff/student/admin): ")
+        role = input("Enter role (staff/student): ")
         self.auth.register(username, password, role)
 
     def login_user(self):
@@ -88,9 +133,9 @@ class UserDatabase:
 # Modify main function to integrate new features
 def main():
     user_db = UserDatabase()
-    virtual_classroom = VirtualClassroom()
+    student_panel = StudentPanel()
+    staff_panel = StaffPanel()
     resource_db = ResourceDatabase()
-    messaging_system = MessagingSystem()
 
     while True:
         os.system("clear")
@@ -99,9 +144,6 @@ def main():
         print("\t\t----------------------------------------------")
         print("\n\t\t\tEnter <1> to Register")
         print("\t\t\tEnter <2> to Login")
-        print("\t\t\tEnter <3> for Staff Panel")
-        print("\t\t\tEnter <4> for Student Panel")
-        print("\t\t\tEnter <5> for Admin Panel")
         print("\t\t\tEnter <0> to Exit\n")
         choice = input("\nEnter Your Choice: ")
         if choice == '1':
@@ -109,17 +151,27 @@ def main():
         elif choice == '2':
             user = user_db.login_user()
             if user:
-                if user.role == 'staff':
-                    staff_panel()
-                elif user.role == 'student':
-                    student_panel()
-                elif user.role == 'admin':
-                    admin_panel()
-                input("Press Enter to continue...")
+                if user.role == 'student':
+                    student_panel.show_welcome_message()
+                    student_panel.remote_learning()
+                    student_panel.access_resources(resource_db)
+                    student_panel.view_attendance()
+                    student_panel.view_calendar()
+                    input("Press Enter to continue...")
+                elif user.role == 'staff':
+                    staff_panel.show_welcome_message()
+                    staff_panel.mark_attendance()
+                    staff_panel.view_holidays()
+                    staff_panel.manage_subjects()
+                    staff_panel.manage_classes()
+                    staff_panel.apply_leave()
+                    staff_panel.view_assigned_classes()
+                    input("Press Enter to continue...")
+                else:
+                    print("Invalid user role.")
             else:
                 print("Login failed. Invalid username or password.")
         elif choice == '0':
-            write_file()
             break
         else:
             print("\nWRONG CHOICE!!!\nTRY AGAIN")
